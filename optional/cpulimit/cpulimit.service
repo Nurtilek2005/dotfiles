@@ -1,0 +1,9 @@
+[Unit]
+Description=cpulimit
+After=network-online.target
+
+[Service]
+ExecStart=/bin/cpulimit.sh
+
+[Install]
+WantedBy=multi-user.target
