@@ -40,6 +40,12 @@ altkey = "Mod1"
 terminal = "kitty"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
+home = gears.filesystem.get_xdg_data_home()
+config_dir = gears.filesystem.get_configuration_dir()
+-----------------------------------------
+
+--[ AUTOSTART ]--------------------------
+awful.spawn.with_shell(config_dir .. "/autostart.sh")
 -----------------------------------------
 
 --[ BEAUTIFUL ]--------------------------
