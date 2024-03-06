@@ -40,19 +40,19 @@ altkey = "Mod1"
 terminal = "kitty"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
-home = gears.filesystem.get_xdg_data_home()
-config_dir = gears.filesystem.get_configuration_dir()
+
+local theme = "nordic_dark"
+local home = gears.filesystem.get_xdg_data_home()
+local config_dir = gears.filesystem.get_configuration_dir()
+local theme_dir = config_dir .. "themes/" .. theme .. "/"
 -----------------------------------------
 
 --[ AUTOSTART ]--------------------------
-awful.spawn.with_shell(config_dir .. "/autostart.sh")
+awful.spawn.with_shell(config_dir .. "autostart.sh")
 -----------------------------------------
 
 --[ BEAUTIFUL ]--------------------------
-beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-
-beautiful.useless_gap = 4
-beautiful.gap_single_client = true
+beautiful.init(theme_dir .. "theme.lua")
 
 local function set_wallpaper(s)
     if beautiful.wallpaper then
