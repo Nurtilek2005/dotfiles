@@ -1,4 +1,5 @@
 #!/bin/bash
+xrdb -merge ~/.Xresources &
 
 restart() {
     local app_name=$1
@@ -7,7 +8,6 @@ restart() {
     "$app_name" &
 }
 
-restart xrdb -merge ~/.Xresources &
 restart xscreensaver -no-splash &
 restart xfce4-power-manager &
 restart numlockx on &
