@@ -10,7 +10,7 @@ local theme_path                                = gfs.get_configuration_dir() ..
 local theme                                     = {}
 
 -- Font
-theme.font                                      = "Exo 2 9"
+theme.font                                      = "Exo 2 10"
 
 -- Colors (Darker colors following the Nordic theme)
 theme.bg_normal                                 = "#3A4152"
@@ -23,6 +23,7 @@ theme.bg_minimize                               = "#2D323F"
 theme.fg_minimize                               = "#A7ADB3"
 
 -- Systray and Widget
+theme.systray_icon_spacing                      = dpi(6)
 theme.bg_systray                                = theme.bg_normal
 theme.bg_widget                                 = theme.bg_normal
 
@@ -35,6 +36,7 @@ theme.border_focus                              = "#313745"
 theme.border_marked                             = "#404759"
 
 -- Taglist
+theme.taglist_square_size                       = dpi(5)
 theme.taglist_bg_focus                          = theme.bg_focus
 theme.taglist_fg_focus                          = theme.fg_focus
 theme.taglist_bg_urgent                         = theme.bg_urgent
@@ -49,10 +51,10 @@ theme.taglist_fg_volatile                       = "#E2EAF1"
 
 -- Taglist Numbers
 theme.taglist_squares_sel                       = theme_assets.taglist_squares_sel(
-    dpi(5), theme.fg_focus
+    theme.taglist_square_size, theme.fg_focus
 )
 theme.taglist_squares_unsel                     = theme_assets.taglist_squares_unsel(
-    dpi(5), theme.fg_normal
+    theme.taglist_square_size, theme.fg_normal
 )
 
 -- Tasklist
@@ -183,7 +185,7 @@ theme.awesome_icon                              = theme_assets.awesome_icon(
 )
 
 -- Icon Theme
-theme.icon_theme                                = "/usr/share/icons/Qogir-dark"
+theme.icon_theme                                = "Papirus-Dark"
 
 return theme
 

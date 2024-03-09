@@ -159,7 +159,7 @@ local tasklist_buttons = gears.table.join(
 awful.screen.connect_for_each_screen(function(s)
     set_wallpaper(s)
 
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    awful.tag({ " 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 " }, s, awful.layout.layouts[1])
 
     s.mypromptbox = awful.widget.prompt()
     s.mylayoutbox = awful.widget.layoutbox(s)
@@ -175,11 +175,56 @@ awful.screen.connect_for_each_screen(function(s)
         buttons = taglist_buttons
     }
     s.mytasklist = awful.widget.tasklist {
-        screen  = s,
-        filter  = awful.widget.tasklist.filter.currenttags,
-        buttons = tasklist_buttons
+        screen          = s,
+        filter          = awful.widget.tasklist.filter.currenttags,
+        buttons         = tasklist_buttons,
+        style           = {
+            border_width = 1,
+            border_color = "#777777",
+            --shape        = gears.shape.rounded_bar,
+        },
+        layout          = {
+            spacing        = 10,
+            spacing_widget = {
+                {
+                    forced_width = 5,
+                    --shape        = gears.shape.circle,
+                    widget       = wibox.widget.separator
+                },
+                valign = "center",
+                halign = "center",
+                widget = wibox.container.place,
+            },
+            layout         = wibox.layout.flex.horizontal
+        },
+        -- Notice that there is *NO* wibox.wibox prefix, it is a template,
+        -- not a widget instance.
+        widget_template = {
+            {
+                {
+                    {
+                        {
+                            id     = "icon_role",
+                            widget = wibox.widget.imagebox,
+                        },
+                        margins = 4,
+                        widget  = wibox.container.margin,
+                    },
+                    {
+                        id     = "text_role",
+                        widget = wibox.widget.textbox,
+                    },
+                    layout = wibox.layout.fixed.horizontal,
+                },
+                left   = 4,
+                right  = 4,
+                widget = wibox.container.margin
+            },
+            id     = "background_role",
+            widget = wibox.container.background,
+        },
     }
-    s.mywibox = awful.wibar({ position = "bottom", screen = s })
+    s.mywibox = awful.wibar({ position = "bottom", screen = s, height = 32 })
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
         {
