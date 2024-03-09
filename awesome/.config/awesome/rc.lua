@@ -7,6 +7,11 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local beautiful = require("beautiful")
 local hotkeys_popup = require("awful.hotkeys_popup")
+local volume_widget = require('awesome-wm-widgets.volume-widget.volume')
+local battery_widget = require("awesome-wm-widgets.battery-widget.battery")
+local calendar_widget = require("awesome-wm-widgets.calendar-widget.calendar")
+local brightness_widget = require("awesome-wm-widgets.brightness-widget.brightness")
+local logout_menu_widget = require("awesome-wm-widgets.logout-menu-widget.logout-menu")
 require("awful.hotkeys_popup.keys")
 require("awful.autofocus")
 
@@ -45,11 +50,6 @@ local theme = "nordic_dark"
 local home = gears.filesystem.get_xdg_data_home()
 local config_dir = gears.filesystem.get_configuration_dir()
 local theme_dir = config_dir .. "themes/" .. theme .. "/"
-
-local volume_step = 2
-local toggle_volume = "amixer sset Master toggle"
-local raise_volume = "amixer set Master " .. volume_step .. "%+ unmute"
-local lower_volume = "amixer set Master " .. volume_step .. "%- unmute"
 -----------------------------------------
 
 --[ AUTOSTART ]--------------------------
@@ -121,6 +121,14 @@ menubar.utils.terminal = terminal
 mytextclock = wibox.widget.textclock()
 mykeyboardlayout = awful.widget.keyboardlayout()
 
+local cw = calendar_widget({
+    theme = 'nord',
+    next_month_button = 3,
+    previous_month_button = 1,
+    placement = 'bottom_right',
+    radius = 4,
+})
+
 local taglist_buttons = gears.table.join(
     awful.button({}, 1, function(t) t:view_only() end),
     awful.button({ modkey }, 1, function(t)
@@ -185,7 +193,7 @@ awful.screen.connect_for_each_screen(function(s)
         buttons         = tasklist_buttons,
         style           = {
             border_width = 1,
-            border_color = "#777777",
+            border_color = beautiful.bg_occupied,
             --shape        = gears.shape.rounded_bar,
         },
         layout          = {
@@ -193,7 +201,7 @@ awful.screen.connect_for_each_screen(function(s)
             spacing_widget = {
                 {
                     forced_width = 5,
-                    --shape        = gears.shape.circle,
+                    shape        = gears.shape.circle,
                     widget       = wibox.widget.separator
                 },
                 valign = "center",
@@ -229,7 +237,7 @@ awful.screen.connect_for_each_screen(function(s)
             widget = wibox.container.background,
         },
     }
-    s.mywibox = awful.wibar({ position = "bottom", screen = s, height = 32 })
+    s.mywibox = awful.wibar({ position = "bottom", screen = s, height = 30, })
     s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
         {
@@ -240,10 +248,41 @@ awful.screen.connect_for_each_screen(function(s)
         },
         s.mytasklist,
         {
-            layout = wibox.layout.fixed.horizontal,
+            spacing_widget = {
+                {
+                    forced_width  = 5,
+                    forced_height = 24,
+                    thickness     = 2,
+                    color         = beautiful.bg_occupied,
+                    widget        = wibox.widget.separator,
+                },
+                valign = 'center',
+                halign = 'center',
+                widget = wibox.container.place,
+            },
+            spacing        = 24,
+            layout         = wibox.layout.fixed.horizontal,
+            wibox.widget.textbox(),
             wibox.widget.systray(),
             mykeyboardlayout,
+            volume_widget {
+                device = "pipewire",
+                widget_type = "icon_and_text"
+            },
+            brightness_widget {
+                type = 'icon_and_text',
+                program = 'light',
+                step = 5,
+            },
+            battery_widget {
+                font = beautiful.font,
+                show_current_level = true
+            },
             mytextclock,
+            logout_menu_widget{
+                font = beautiful.font,
+                onlock = function() awful.spawn.with_shell('dm-tool lock') end
+            },
             s.mylayoutbox,
         },
     }
@@ -360,26 +399,39 @@ globalkeys = gears.table.join(
     awful.key({ modkey }, "p", function() menubar.show() end,
         { description = "show the menubar", group = "launcher" }
     ),
-    awful.key({}, "XF86AudioRaiseVolume",
-        function()
-            awful.spawn(raise_volume)
-            awesome:emit_signal("your_volume_signal")
-        end,
-        { description = "open a terminal", group = "launcher" }
+    awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(2) end,
+        { description = "volume up", group = "custom" }
     ),
-    awful.key({}, "XF86AudioLowerVolume",
-        function()
-            awful.spawn(lower_volume)
-            awesome:emit_signal("your_volume_signal")
-        end,
-        { description = "open a terminal", group = "launcher" }
+    awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(2) end,
+        { description = "volume down", group = "custom" }
     ),
-    awful.key({}, "XF86AudioMute",
+    awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end,
+        { description = "volume mute", group = "custom" }
+    ),
+    awful.key({}, "XF86MonBrightnessUp", function() brightness_widget:inc() end,
+        { description = "increase brightness", group = "custom" }
+    ),
+    awful.key({}, "XF86MonBrightnessDown", function() brightness_widget:dec() end,
+        { description = "decrease brightness", group = "custom" }
+    ),
+    -- Media Keys
+    awful.key({}, "XF86AudioPlay",
         function()
-            awful.spawn(toggle_volume)
-            awesome:emit_signal("your_volume_signal")
+            awful.util.spawn("playerctl play-pause", false)
         end,
-        { description = "open a terminal", group = "launcher" }
+        { description = "audio play toggle", group = "custom" }
+    ),
+    awful.key({}, "XF86AudioNext",
+        function()
+            awful.util.spawn("playerctl next", false)
+        end,
+        { description = "play audio next", group = "custom" }
+    ),
+    awful.key({}, "XF86AudioPrev",
+        function()
+            awful.util.spawn("playerctl previous", false)
+        end,
+        { description = "play previous audio", group = "custom" }
     )
 )
 
@@ -621,9 +673,9 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
-awesome.connect_signal("your_volume_signal", function(volume)
-    naughty.notification {
-        message = "Current volume: " .. tostring(volume) .. "%",
-    }
-end)
+mytextclock:connect_signal("button::press",
+    function(_, _, _, button)
+        if button == 1 then cw.toggle() end
+    end
+)
 -----------------------------------------

@@ -10,7 +10,7 @@ local theme_path                                = gfs.get_configuration_dir() ..
 local theme                                     = {}
 
 -- Font
-theme.font                                      = "Exo 2 10"
+theme.font                                      = "JetBrainsMono Nerd Font 9"
 
 -- Colors (Darker colors following the Nordic theme)
 theme.bg_normal                                 = "#3A4152"
@@ -23,7 +23,7 @@ theme.bg_minimize                               = "#2D323F"
 theme.fg_minimize                               = "#A7ADB3"
 
 -- Systray and Widget
-theme.systray_icon_spacing                      = dpi(6)
+theme.systray_icon_spacing                      = dpi(2)
 theme.bg_systray                                = theme.bg_normal
 theme.bg_widget                                 = theme.bg_normal
 
