@@ -45,6 +45,11 @@ local theme = "nordic_dark"
 local home = gears.filesystem.get_xdg_data_home()
 local config_dir = gears.filesystem.get_configuration_dir()
 local theme_dir = config_dir .. "themes/" .. theme .. "/"
+
+local volume_step = 2
+local toggle_volume = "amixer sset Master toggle"
+local raise_volume = "amixer set Master " .. volume_step .. "%+ unmute"
+local lower_volume = "amixer set Master " .. volume_step .. "%- unmute"
 -----------------------------------------
 
 --[ AUTOSTART ]--------------------------
@@ -354,6 +359,27 @@ globalkeys = gears.table.join(
     ),
     awful.key({ modkey }, "p", function() menubar.show() end,
         { description = "show the menubar", group = "launcher" }
+    ),
+    awful.key({}, "XF86AudioRaiseVolume",
+        function()
+            awful.spawn(raise_volume)
+            awesome:emit_signal("your_volume_signal")
+        end,
+        { description = "open a terminal", group = "launcher" }
+    ),
+    awful.key({}, "XF86AudioLowerVolume",
+        function()
+            awful.spawn(lower_volume)
+            awesome:emit_signal("your_volume_signal")
+        end,
+        { description = "open a terminal", group = "launcher" }
+    ),
+    awful.key({}, "XF86AudioMute",
+        function()
+            awful.spawn(toggle_volume)
+            awesome:emit_signal("your_volume_signal")
+        end,
+        { description = "open a terminal", group = "launcher" }
     )
 )
 
@@ -594,4 +620,10 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+
+awesome.connect_signal("your_volume_signal", function(volume)
+    naughty.notification {
+        message = "Current volume: " .. tostring(volume) .. "%",
+    }
+end)
 -----------------------------------------
