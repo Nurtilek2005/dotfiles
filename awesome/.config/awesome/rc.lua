@@ -397,7 +397,7 @@ globalkeys = gears.table.join(
         end,
         { description = "lua execute prompt", group = "awesome" }
     ),
-    awful.key({ modkey }, "p", function() menubar.show() end,
+    awful.key({ modkey }, "p", function() awful.spawn.with_shell("launcher_t1") end,
         { description = "show the menubar", group = "launcher" }
     ),
     awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc() end,
