@@ -266,8 +266,9 @@ awful.screen.connect_for_each_screen(function(s)
             wibox.widget.systray(),
             mykeyboardlayout,
             volume_widget {
+                step = 2,
                 device = "pipewire",
-                widget_type = "icon_and_text"
+                widget_type = "icon_and_text",
             },
             brightness_widget {
                 type = 'icon_and_text',
@@ -276,10 +277,10 @@ awful.screen.connect_for_each_screen(function(s)
             },
             battery_widget {
                 font = beautiful.font,
-                show_current_level = true
+                show_current_level = true,
             },
             mytextclock,
-            logout_menu_widget{
+            logout_menu_widget {
                 font = beautiful.font,
                 onlock = function() awful.spawn.with_shell('dm-tool lock') end
             },
@@ -399,10 +400,10 @@ globalkeys = gears.table.join(
     awful.key({ modkey }, "p", function() menubar.show() end,
         { description = "show the menubar", group = "launcher" }
     ),
-    awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc(2) end,
+    awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc() end,
         { description = "volume up", group = "custom" }
     ),
-    awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec(2) end,
+    awful.key({}, "XF86AudioLowerVolume", function() volume_widget:dec() end,
         { description = "volume down", group = "custom" }
     ),
     awful.key({}, "XF86AudioMute", function() volume_widget:toggle() end,

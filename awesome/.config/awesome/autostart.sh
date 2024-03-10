@@ -1,4 +1,16 @@
 #!/bin/bash
+
+CHECK_FILE="/tmp/awesome_autostart_executed"
+
+if [ ! -e "$CHECK_FILE" ]; then
+    touch "$CHECK_FILE"
+    echo "Executing awesome-client to restart AwesomeWM..."
+    awesome-client "awesome.restart()"
+    trap "rm -f $CHECK_FILE" EXIT
+else
+    echo "AwesomeWM already restarted, skipping..."
+fi
+
 xrdb -merge ~/.Xresources &
 
 restart() {
