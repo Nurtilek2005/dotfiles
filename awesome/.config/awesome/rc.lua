@@ -47,13 +47,14 @@ editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
 local theme = "nordic_dark"
-local home = gears.filesystem.get_xdg_data_home()
-local config_dir = gears.filesystem.get_configuration_dir()
-local theme_dir = config_dir .. "themes/" .. theme .. "/"
+local home_dir = os.getenv("HOME")
+local awesome_dir = gears.filesystem.get_configuration_dir()
+local launcher = home_dir .. "/.config/rofi/scripts/launcher_t1"
+local theme_dir = awesome_dir .. "themes/" .. theme .. "/"
 -----------------------------------------
 
 --[ AUTOSTART ]--------------------------
-awful.spawn.with_shell(config_dir .. "autostart.sh")
+awful.spawn.with_shell(awesome_dir .. "autostart.sh")
 -----------------------------------------
 
 --[ BEAUTIFUL ]--------------------------
@@ -397,7 +398,7 @@ globalkeys = gears.table.join(
         end,
         { description = "lua execute prompt", group = "awesome" }
     ),
-    awful.key({ modkey }, "p", function() awful.spawn.with_shell("launcher_t1") end,
+    awful.key({ modkey }, "p", function() awful.spawn.with_shell(launcher) end,
         { description = "show the menubar", group = "launcher" }
     ),
     awful.key({}, "XF86AudioRaiseVolume", function() volume_widget:inc() end,
