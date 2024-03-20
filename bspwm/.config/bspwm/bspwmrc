@@ -1,5 +1,8 @@
 #! /bin/sh
 
+$HOME/.config/bspwm/autorun.sh
+pgrep -x sxhkd >/dev/null || sxhkd &
+
 bspc monitor -d 1 2 3 4 5 6 7 8 9
 
 bspc config border_width 4
@@ -27,7 +30,7 @@ bspc config focus_by_distance true
 bspc config automatic_scheme dwindle
 bspc config split_ratio 0.50
 bspc config auto_alternate true
-bspc config auto_cancel true
+bspc config aupgrep -x sxhkd >/dev/null || sxhkd &to_cancel true
 bspc config borderless_monocle false
 bspc config gapless_monocle false
 bspc config single_monocle true
@@ -40,7 +43,3 @@ pgrep -x sxhkd >/dev/null || sxhkd &
 #bspc rule -a Kupfer.py focus=on
 bscp rule -a polybar manage=off
 bspc rule -a Screenkey manage=off
-
-pgrep -x sxhkd >/dev/null || sxhkd &
-
-$HOME/.config/bspwm/autorun.sh
