@@ -42,11 +42,5 @@ bscp rule -a polybar manage=off
 bspc rule -a Screenkey manage=off
 
 pgrep -x sxhkd >/dev/null || sxhkd &
-$HOME/.config/polybar/launch.sh &
-xsetroot -cursor_name left_ptr &
-xrdb -merge ~/.Xresources &
-nitrogen --restore &
-numlockx on &
-flameshot &
-compfy -b &
-dunst &
+
+$HOME/.config/bspwm/autorun.sh
