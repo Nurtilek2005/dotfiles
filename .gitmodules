@@ -1,3 +1,6 @@
 [submodule "awesome/.config/awesome/awesome-wm-widgets"]
 	path = awesome/.config/awesome/awesome-wm-widgets
 	url = https://github.com/streetturtle/awesome-wm-widgets
+[submodule "bspwm/.config/alacritty/themes"]
+	path = bspwm/.config/alacritty/themes
+	url = https://github.com/alacritty/alacritty-theme

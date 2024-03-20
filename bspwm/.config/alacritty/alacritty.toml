@@ -1,0 +1,53 @@
+import = [
+    "~/.config/alacritty/themes/themes/nord.toml"
+]
+
+[env]
+WINIT_X11_SCALE_FACTOR = "1.0"
+
+[shell]
+program = "/usr/bin/zsh"
+args = ["-l"]
+
+[window]
+dynamic_padding = true
+opacity = 0.25
+
+[window.dimensions]
+columns = 140
+lines = 40
+
+[window.padding]
+x = 4
+y = 4
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[font]
+size = 13
+
+[font.offset]
+x = 0
+y = -2
+
+[font.normal]
+family = "JetBrains Mono"
+style = "Medium"
+
+[font.bold]
+family = "JetBrains Mono"
+style = "ExtraBold"
+
+[font.italic]
+family = "JetBrains Mono"
+style = "Medium Italic"
+
+[font.bold_italic]
+family = "JetBrains Mono"
+style = "ExtraBold Italic"
+
+[font.glyph_offset]
+x = 0
+y = 0
