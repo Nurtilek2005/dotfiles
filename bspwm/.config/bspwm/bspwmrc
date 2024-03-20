@@ -48,5 +48,5 @@ xrdb -merge ~/.Xresources &
 nitrogen --restore &
 numlockx on &
 flameshot &
-picom -b &
+compfy -b &
 dunst &
